@@ -50,6 +50,7 @@ amqp.connect(process.env.AMQP_URL, function(error0, connection) {
         rfid=message.toString()
         console.log('Received message:', rfid);
         channel.sendToQueue(queue, Buffer.from(rfid));
+        client.publish('etoll/test',rfid, 1)
         console.log(" [x] Sent %s", rfid);
     });
   });
