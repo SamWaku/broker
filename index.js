@@ -51,7 +51,7 @@ client.on('error', function (error) {
 // subscribe to topic 'my/test/topic'
 client.subscribe('etoll/vid');
 
-
+app.get('/', (req, res) =>{
 amqp.connect(process.env.AMQP_URL, function(error0, connection) {
   if (error0) {
     throw error0;
@@ -66,7 +66,7 @@ amqp.connect(process.env.AMQP_URL, function(error0, connection) {
     channel.assertQueue(queue, {
       durable: false
     });
-    app.get('/', (req, res) =>{
+   
 
         res.send('<h1>E-Toll API running 🥳</h1>')
         client.on('message', function (topic, message) {
@@ -79,9 +79,9 @@ amqp.connect(process.env.AMQP_URL, function(error0, connection) {
                 console.log(" [x] Sent %s", rfid);
              
         });
-    })
+   
   });
-
+})
   
 });
 
