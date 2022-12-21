@@ -1,0 +1,17 @@
+{
+  "name": "etoll",
+  "version": "1.0.0",
+  "description": "E-Toll RFID Handler",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js",
+    "start": "node index.js"
+  },
+  "author": "Ngalande",
+  "license": "ISC",
+  "dependencies": {
+    "amqplib": "^0.10.3",
+    "dotenv": "^16.0.3",
+    "mqtt": "^4.3.7"
+  }
+}
