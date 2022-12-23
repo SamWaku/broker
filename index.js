@@ -78,16 +78,16 @@ app.get('/etoll', (req, res) => {
             client.on('message', function (topic, message) {
                 // called each time a message is received
                 rfid=message.toString()
-                if(rfid){
+                //if(rfid){
                     console.log('Received message:', rfid);
                     channel.sendToQueue(queue, Buffer.from(rfid));
                     client.publish('etoll/test',rfid, 1)
                     console.log(" [x] Sent %s", rfid);
                     res.send('<h1>Data Processed 🥳</h1>')
-                }
-                else{
+                //}
+                //else{
                   
-                }
+                //}
                     res.status(404).send();
             });
        
