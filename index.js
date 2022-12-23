@@ -52,49 +52,39 @@ client.on('error', function (error) {
 client.subscribe('etoll/vid');
 
 app.get('/', (req, res) =>{
-  res.send('<h1>E-Toll API running 🥳</h1>')
+amqp.connect(process.env.AMQP_URL, function(error0, connection) {
+  if (error0) {
+    throw error0;
+  }
+  connection.createChannel(function(error1, channel) {
+    if (error1) {
+      throw error1;
+    }
+    var queue = 'etoll';
+    //var msg = 'Hello World!';
 
+    channel.assertQueue(queue, {
+      durable: false
+    });
+   
+
+        res.send('<h1>E-Toll API running 🥳</h1>')
+        client.on('message', function (topic, message) {
+            // called each time a message is received
+            rfid=message.toString()
+            
+                console.log('Received message:', rfid);
+                channel.sendToQueue(queue, Buffer.from(rfid));
+                client.publish('etoll/test',rfid, 1)
+                console.log(" [x] Sent %s", rfid);
+             
+        });
+   
+  });
+})
   
 });
-app.get('/etoll', (req, res) => {
-  
 
-    amqp.connect(process.env.AMQP_URL, function(error0, connection) {
-      if (error0) {
-        throw error0;
-      }
-      connection.createChannel(function(error1, channel) {
-        if (error1) {
-          throw error1;
-        }
-        var queue = 'etoll';
-        //var msg = 'Hello World!';
-    
-        channel.assertQueue(queue, {
-          durable: false
-        });
-       
-    
-            client.on('message', function (topic, message) {
-                // called each time a message is received
-                rfid=message.toString()
-                //if(rfid){
-                    console.log('Received message:', rfid);
-                    channel.sendToQueue(queue, Buffer.from(rfid));
-                    client.publish('etoll/test',rfid, 1)
-                    console.log(" [x] Sent %s", rfid);
-                    res.send('<h1>Data Processed 🥳</h1>')
-                //}
-                //else{
-                  
-                //}
-                    res.status(404).send();
-            });
-       
-      });
-    })
-  
-})
 
   
 
