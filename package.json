@@ -4,8 +4,8 @@
   "description": "E-Toll RFID Handler",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js",
-    "start": "node index.js"
+    "test": "node app.js",
+    "start": "node app.js"
   },
   "author": "Ngalande",
   "license": "ISC",
