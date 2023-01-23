@@ -8,8 +8,10 @@ const port = 8883;
 
 (async () => {
 
+  server.
 
   server.listen(port, '0.0.0.0', function () {
     console.log('🚀  Server listening on port: ', port)
   });
 })();
+
