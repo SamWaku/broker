@@ -13,7 +13,7 @@ const broker = require('./src/broker/broker');
 const server = require('net').createServer(broker.handle)
 const port = 8883;
 
-app.listen(port, '0.0.0.0', function () {
+app.listen(port, function () {
     console.log('🚀  Server listening on port: ', port)
   });
 // (async () => {
@@ -25,3 +25,5 @@ app.listen(port, '0.0.0.0', function () {
 //   });
 // })();
 
+// Export the Express API
+module.exports = app
