@@ -12,6 +12,7 @@
   "dependencies": {
     "aedes": "^0.48.1",
     "aedes-persistence-redis": "^9.0.2",
+    "aedes-server-factory": "^0.2.1",
     "amqplib": "^0.10.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
