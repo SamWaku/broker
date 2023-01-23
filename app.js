@@ -1,11 +1,15 @@
+require('dotenv').config();
 const express = require('express')
-const app = express()
 
-app.get('/', function (req, res) {
-  res.send('Hello World')
-})
 
-app.listen(3000)
+
+// const to = require('await-to-js').default;
+const broker = require('./src/broker/broker');
+
+const server = require('net').createServer(broker.handle)
+const port = 8883;
+
+server.listen(port);
 
 // Export the Express API
-module.exports = app
+module.exports = server
