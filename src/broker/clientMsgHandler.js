@@ -8,7 +8,7 @@ function HandleMsg(topic, msg){
             console.log(`Msg -> ${msg}`);
             break;
         case 'etoll/rfid':
-            //connect to amqp
+            //connect to amqp and send queue
             amqp.connect(process.env.AMQP_URL, function(error0, connection) {
                 if (error0) {
                   throw error0;
