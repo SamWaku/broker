@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Deploy to Server 1
-        uses: ngalande/eToll_Broker@main/.github/workflows/vps_deploy.yml@v1
+        uses: actions/checkout@v1
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSHKEY }}
           REMOTE_HOST: ${{ secrets.HOST }}
