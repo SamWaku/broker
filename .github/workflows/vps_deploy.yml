@@ -30,6 +30,7 @@ jobs:
         script: |
           pm2 stop etollbroker
           cd /var/www/html/eToll_Broker
+          git init
           git pull
 
           npm install 
