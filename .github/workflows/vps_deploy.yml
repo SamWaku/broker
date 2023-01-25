@@ -3,29 +3,36 @@ name: Push-to-VPS
 # Trigger deployment only on push to master branch
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+
 
 jobs:
-  deploy:
+  build:
     name: Deploy to VPS on main branch push
     runs-on: ubuntu-20.04
 
+
     steps:
       - name: Checkout the files
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12.x'
+      - name: Install dependencies
+      - run: npm install
+      - name: run app
+      - run: npm start
 
-      - name: Deploy to Server 1
-        uses: actions/checkout@v2
-        env:
+  deploy:
+    runs-on: ubuntu-20.04
+    needs: [build] 
+    steps:
+      - uses: actions/checkout@v2
+        with:
           SSH_PRIVATE_KEY: ${{ secrets.SSHKEY }}
           REMOTE_HOST: ${{ secrets.HOST }}
           REMOTE_USER: ${{ secrets.USERNAME }}
           TARGET: ${{ secrets.DIR }}
-          script: |
-            cd /var/www/html/eToll_Broker
-            git pull origin main
-            git status
-            npm install
-            pm2 restart etollbroker
-            # ngalande/e-Toll_Broker@main
+
+   
