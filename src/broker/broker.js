@@ -57,7 +57,7 @@ broker.on('publish', function(packet, client){
 
 //on client sudscriber received data
 broker.on('ack', function(message, client){
-    console.log('%s ack\'d message', client.id);
+    console.log('%s Acknoledged message', client.id);
 });
 
 //On client disconnected

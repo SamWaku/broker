@@ -1,21 +1,34 @@
 // const mq = require('../client')
+var amqp = require('amqplib/callback_api');
 
-
+//function to handle emiting messages to rabbitmq
 function HandleMsg(topic, msg){
-
-    // console.log(`Topic -> ${topic}`);
-    // console.log(`Msg -> ${msg}`);
-
-    // const msgObj = JSON.parse(msg); 
     switch (topic) {
-        case 'etoll/carid':
-            //let Sid = msg
+        case 'etoll/status':
             console.log(`Msg -> ${msg}`);
-            // client.publish('etoll/test', msg)
             break;
-        case 'smartbin/status':
-            console.log('topic 2')
-
+        case 'etoll/rfid':
+            //connect to amqp
+            amqp.connect(process.env.AMQP_URL, function(error0, connection) {
+                if (error0) {
+                  throw error0;
+                }
+                connection.createChannel(function(error1, channel) {
+                  if (error1) {
+                    throw error1;
+                  }
+                  var queue = 'etoll';
+              
+                  channel.assertQueue(queue, {
+                    durable: false
+                  });
+                  // called each time a message is received
+                rfid=msg
+                //message sent to amqp
+                channel.sendToQueue(queue, Buffer.from(rfid));
+                console.log(" [x] Sent %s", rfid);
+              })
+            })
             break;
 
         default: break;
