@@ -1,38 +1,32 @@
-name: Push-to-VPS
+# This is a basic workflow to help you get started with Actions
 
-# Trigger deployment only on push to master branch
+name: Node.js CD
+
+# Controls when the action will run. 
 on:
+  # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ main ]
 
-
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  # This workflow contains a single job called "build"
   build:
-    name: Deploy to VPS on main branch push
+    # The type of runner that the job will run on
     runs-on: ubuntu-20.04
 
-
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Checkout the files
-      - uses: actions/checkout@v2
-      - name: Use Node.js
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '12.x'
-      - name: Install dependencies
-      - run: npm install
-      - name: run app
-      - run: npm start
-
-  deploy:
-    runs-on: ubuntu-20.04
-    needs: [build] 
-    steps:
-      - uses: actions/checkout@v2
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSHKEY }}
-          REMOTE_HOST: ${{ secrets.HOST }}
-          REMOTE_USER: ${{ secrets.USERNAME }}
-          TARGET: ${{ secrets.DIR }}
-
-   
+    - name: Deploy using ssh
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSHKEY }}
+        port: 22
+        script: |
+          cd /var/www/html/eToll_Broker
+          git pull origin main
+          git status
+          npm install --only=prod
+          pm2 restart etollbroker
