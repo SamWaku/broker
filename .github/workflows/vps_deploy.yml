@@ -1,31 +1,28 @@
-name: Deploy
- 
-on: [push]
- 
+name: Deploy-to-VPS
+
+ #Trigger deployment only on push to main branch
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
-  build:
- 
+  deploy:
+    name: Deploy to VPS on main branch push
     runs-on: ubuntu-22.04
- 
+
     steps:
-    - uses: actions/checkout@v1
- 
-    - name: Copy repository contents via scp
-      uses: ngalande/eToll_Broker@main
-      env:
-        HOST: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.SSHKEY }}
-      with:
-        source: "."
-        target: "/var/www/html/eToll_Broker"
- 
-    - name: Executing remote command
-      uses: ngalande/eToll_Broker@main
-      with:
-        host: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.SSHKEY }}
-        script: ls
+      - name: Checkout the files
+        uses: actions/checkout@v2
+
+
+      - name: Deploy to Sams VPS
+        uses: ngalande/eToll_Broker@main
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.SSHKEY }}
+
+
