@@ -26,7 +26,7 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd /var/www/html/eToll_Broker
-          sudo git pull origin main
-          sudo git status
-          sudo npm install 
-          sudo pm2 restart etollbroker
+          git pull origin main
+          git status
+          npm install 
+          pm2 restart etollbroker
