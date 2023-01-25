@@ -22,4 +22,10 @@ jobs:
           REMOTE_HOST: ${{ secrets.HOST }}
           REMOTE_USER: ${{ secrets.USERNAME }}
           TARGET: ${{ secrets.DIR }}
-          # ngalande/e-Toll_Broker@main
+          script: |
+            cd /var/www/html/eToll_Broker
+            git pull origin main
+            git status
+            npm install
+            pm2 restart etollbroker
+            # ngalande/e-Toll_Broker@main
