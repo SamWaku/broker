@@ -23,10 +23,10 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSHKEY }}
-        port: 22
+        port: ${{ secrets.PORT }}
         script: |
           cd /var/www/html/eToll_Broker
           git pull origin main
           git status
-          npm install --only=prod
+          npm install 
           pm2 restart etollbroker
