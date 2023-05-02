@@ -16,6 +16,9 @@ var options = {
 // initialize the MQTT client
 var client = mqtt.connect(options);
 var arr=[]
+var data=''
+let count = 0;
+let prevCount = 0;
 // setup the callbacks
 client.on('connect', function () {
     console.log('Connected');
@@ -30,44 +33,63 @@ client.on('error', function (error) {
 
 client.on('message', function (topic, message) {
     var rfid = message.toString()
-    i=0
+    
     // called each time a message is received
-    console.log('Received message:', topic, rfid);
-    // publish message 'Hello' to topic 'my/test/topic'
-    // client.publish('etoll/test',rfid, 1)
-    // arr.push(rfid);
-    // if(arr.length > 0){
-    //     while(arr.length != 0){
-    //         console.log(arr.shift())
-    //         // send.to.mongodb(arr.shift())
-    //         i--;  
-    //     }
-    //     // console.log('---------------actaual data-----------')
-    //     // console.log('-------------------------------------')
-    //     // console.log('---------------popped data-----------')
-    //     // console.log(arr.shift)
-    // }
-    client.publish({
-      topic: 'etoll/test',
-      message: rfid,
-      options:{
-        qos: 2,
-      }
+    
+    // arr.push(rfid)
+    // if(rfid.length > 0){
       
-      //messageId: 2
-    });
+      count++
+      new Promise ((res, rej)=>{
+        data += '['
+        data += rfid
+        data += ','
+        res()
+
+      });
+      if(data.length > 0){
+        // arr.push(data)
+        data = data.slice(0, -1)
+        data +=']'
+        data = data.replace('][', ',')
+        let act = JSON.parse(data)
+        console.log(act)
+        console.log('wait...')
+        data += ''
+      }
+      // prevCount = count
+      // for(i=0;i<count;i++){
+      //   console.log('for value: ', i)
+      // }
+      // count=0
+      // if(prevCount === count){
+      //   console.log('counter stopped')
+      // }
+      // console.log('prev: ', prevCount)
+
+      // col(data)
+      // async function val(params) {
+      //   let listener1 = new Promise((resolve, reject) => {
+      //     setTimeout(() => {
+      //       resolve(data);
+      //     }, 1000);
+      //   });
+      //   let dat = await Promise.all(listener1)
+        // console.log(data)
+
+
+
 });
 
-// subscribe to topic 'my/test/topic'
 
-
-// client.subscribe('etoll/test', {qos: 2});
 
 app.listen(3000, () => {
     console.log('Sever Running at port 3000')
 })
 
-
+async function col(res){
+  console.log(res)
+}
 
 
 //RFID 1
@@ -81,3 +103,12 @@ app.listen(3000, () => {
 
 // // RFID 4
 // cc ff ff 20 5 10 0 30 0 e2 0 0 20 66 11 2 72 18 40 ec b4 bd 2f
+
+
+
+// module.exports = {
+//     apps : [{
+//       name   : "etollbroker",
+//       script : "npm start"
+//     }]
+//   }
