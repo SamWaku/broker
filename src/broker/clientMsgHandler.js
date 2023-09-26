@@ -1,6 +1,6 @@
 // const mq = require('../client')
 var amqp = require('amqplib/callback_api');
-const WebSocket = require('ws');
+const io = require('socket.io-client');
 
 //function to handle emiting messages to rabbitmq
 function HandleMsg(topic, msg){
@@ -12,17 +12,17 @@ function HandleMsg(topic, msg){
             // console.log(" Pappi Sent %s", msg);
             //connect to websocket
             // Create a WebSocket client
-            const client = new WebSocket('ws://etollapi.samwaku.com/');
+            const socket = io.connect('https://etollapi.samwaku.com/');
 
             // Event handler for when the client connection is established
-            client.on('open', () => {
+            socket.on('connect', () => {
               console.log('Connected to the server.');
 
               // Send data to the server
-              client.send(msg);
+              socket.emit('message', msg);
+              console.log(`Data sent ${msg}`)
 
-              // Close the connection after sending the message
-              client.close();
+              socket.disconnect();
             });
             
             break;
